@@ -439,6 +439,7 @@ public class GISController {
 
                     if(mModel.mTransformationMatrix == null) return;
                     if(_e.getClickCount() == 2){
+                        if(mView.mDialogScene != null) mView.closeSelectionDialog();
                         java.util.List<GeoObject> geos = mModel.initSelection(new Point((int) _e.getX(), (int) _e.getY()));
                         mView.createSelectionDialog(geos);
                     }

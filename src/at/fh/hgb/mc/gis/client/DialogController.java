@@ -4,6 +4,7 @@ import at.fh.hgb.mc.gis.feature.GeoLine;
 import at.fh.hgb.mc.gis.feature.GeoObject;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 
 import java.util.Collections;
@@ -47,6 +48,14 @@ public class DialogController {
                 GeoObject itemObject = mModel.get(listIndex);
 
                 mView.displayDialogItem(itemObject);
+            } else if(source instanceof Button){
+                Button button = (Button) source;
+                switch(button.getId()){
+                    case "okButton":{
+                        mView.closeSelectionDialog();
+                        break;
+                    }
+                }
             }
         }
     }

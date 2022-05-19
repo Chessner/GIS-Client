@@ -82,7 +82,8 @@ public class GISView extends Application implements IDataObserver {
      */
     protected Scene mScene;
 
-    private Scene mDialogScene;
+    protected Scene mDialogScene;
+    private Stage mDialogStage;
     /**
      * Flag indicating whether the displayed image is currently being dragged across the screen.
      */
@@ -380,8 +381,9 @@ public class GISView extends Application implements IDataObserver {
     }
 
     public void createSelectionDialog(java.util.List<GeoObject> _data) {
+        if(mDialogStage != null) return;
         mDialogController = new DialogController(_data, this);
-        Stage stage = new Stage();
+        mDialogStage = new Stage();
         Parent root;
         try {
             root = FXMLLoader.load(getClass().getResource("selection_dialog.fxml"));
@@ -392,9 +394,13 @@ public class GISView extends Application implements IDataObserver {
 
         mDialogScene = new Scene(root, 440, 440);
 
-        stage.setTitle("Selection Dialog");
-        stage.setScene(mDialogScene);
-        stage.show();
+        mDialogStage.setTitle("Selection Dialog");
+        mDialogStage.setScene(mDialogScene);
+        mDialogStage.show();
+        mDialogStage.setResizable(false);
+
+        Button okButton = (Button) mDialogScene.lookup("#okButton");
+        okButton.setOnAction(mDialogController.getDialogActionHandler());
 
         ArrayList<MenuButton> menuButtons = new ArrayList<>();
         int currentType = -1;
@@ -403,6 +409,7 @@ public class GISView extends Application implements IDataObserver {
         for(int i = 0; i < _data.size(); i++){
             if(_data.get(i).getType() != currentType){
                 currentButton = new MenuButton(Integer.toString(_data.get(i).getType()));
+                currentButton.setPrefWidth(130);
                 menuButtons.add(currentButton);
                 currentType = _data.get(i).getType();
             }
@@ -446,5 +453,12 @@ public class GISView extends Application implements IDataObserver {
         WritableImage writable = SwingFXUtils.toFXImage(image, null);
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.drawImage(writable, 0, 0);
+    }
+
+    protected void closeSelectionDialog(){
+        mDialogStage.close();
+        mDialogStage = null;
+        mDialogScene = null;
+        mDialogController = null;
     }
 }

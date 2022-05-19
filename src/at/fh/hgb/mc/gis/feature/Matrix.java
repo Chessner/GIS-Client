@@ -355,7 +355,17 @@ public class Matrix {
                                    java.awt.Rectangle _win, boolean mirror) {
         Matrix translationMatrixA = Matrix.translate(-_world.getCenterX(), -_world.getCenterY());
 
-        Matrix scaleMatrix = Matrix.scale(Matrix.getZoomFactorY(_world, _win));
+        double zoomFactorY = Matrix.getZoomFactorY(_world,_win);
+        double zoomFactorX = Matrix.getZoomFactorX(_world,_win);
+        double zoomF;
+        if(zoomFactorY < 1 && zoomFactorX < 1){
+            zoomF = Math.min(zoomFactorY, zoomFactorX);
+        } else if(zoomFactorY >= 1 && zoomFactorX >= 1){
+            zoomF = Math.max(zoomFactorY, zoomFactorX);
+        } else {
+            zoomF = zoomFactorY;
+        }
+        Matrix scaleMatrix = Matrix.scale(zoomF);
 
         Matrix mirrorMatrix = Matrix.mirrorX();
 
