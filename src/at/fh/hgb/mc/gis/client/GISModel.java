@@ -98,6 +98,7 @@ public class GISModel {
      * @return The generated Image.
      */
     private Image initCanvas() {
+        if(mData == null) return null;
         return new BufferedImage(mWidth, mHeight, BufferedImage.TYPE_INT_RGB);
     }
 
@@ -113,13 +114,15 @@ public class GISModel {
             zoomToFit();
         }
 
+        if(mImage == null) return;
         Graphics2D g2D = (Graphics2D) mImage.getGraphics();
         g2D.clearRect(0, 0, mWidth, mHeight);
 
-        for (GeoObject poly : mData) {
-            PresentationSchema schema = mDrawingContext.getSchema(poly.getType());
+        if(mData == null) return;
+        for (GeoObject geo : mData) {
+            PresentationSchema schema = mDrawingContext.getSchema(geo.getType());
             if (schema != null) {
-                schema.paint(g2D, poly, mTransformationMatrix);
+                schema.paint(g2D, geo, mTransformationMatrix);
             }
         }
 
@@ -173,7 +176,7 @@ public class GISModel {
      * @see DummyGIS
      */
     public void loadPOIData() {
-        if (!mShowPOI) return;
+        if (mTransformationMatrix == null) return;
 
         mPOIData = new ArrayList<>();
         Matrix invers = mTransformationMatrix.invers();
@@ -329,6 +332,8 @@ public class GISModel {
      * @param _winBounds Der darzustellende Bereich in Bildschirm-Koordinaten
      */
     public void zoomRect(Rectangle _winBounds) {
+        if(mTransformationMatrix == null) return;
+
         Rectangle window = new Rectangle(0, 0, mWidth, mHeight - 1);
         Matrix m = Matrix.zoomToFit(_winBounds, window, false);
         mTransformationMatrix = m.multiply(mTransformationMatrix);
@@ -352,7 +357,8 @@ public class GISModel {
      * @return der Darstellungsmassstab
      * @see Matrix
      */
-    protected double calculateScale() {
+    protected Double calculateScale() {
+        if(mTransformationMatrix == null) return null;
         // Aspekt b) in der Maßstabsformel
         // ein künstlicher Vektor/ein Objekt; hier der Länge 1cm
         // (gilt nur für DummyGIS-Koordinaten, die in cm angegeben sind)
@@ -372,8 +378,9 @@ public class GISModel {
      * This method updates all observers with the new scale.
      */
     public void updateScale() {
-        double scale = calculateScale();
-        mObserver.updateScale((int) scale);
+        Double scale = calculateScale();
+        if(scale == null) return;
+        mObserver.updateScale(scale.intValue());
     }
 
     /**
@@ -382,7 +389,9 @@ public class GISModel {
      * @param _scale The new scale for displaying objects on mImage.
      */
     public void zoomToScale(int _scale) {
-        double currentScale = calculateScale();
+        Double currentScale = calculateScale();
+        if(currentScale == null) return;
+
         zoom(currentScale / _scale);
     }
 
@@ -410,7 +419,7 @@ public class GISModel {
      * This method changes the bounding box mBBox and updates the data displayed accordingly.
      */
     protected void stick() {
-        if (mServer instanceof DummyGIS) return;
+        if (mServer instanceof DummyGIS || mTransformationMatrix == null) return;
 
         if (mBBox == null) {
             mBBox = mTransformationMatrix.invers().multiply(new Rectangle(0, 0, mWidth, mHeight));

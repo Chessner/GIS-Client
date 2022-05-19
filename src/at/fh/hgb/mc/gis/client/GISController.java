@@ -437,6 +437,7 @@ public class GISController {
                     mZStart = new java.awt.geom.Point2D.Double(_e.getX(), _e.getY());
                     mDStart = new java.awt.geom.Point2D.Double(_e.getX(), _e.getY());
 
+                    if(mModel.mTransformationMatrix == null) return;
                     if(_e.getClickCount() == 2){
                         java.util.List<GeoObject> geos = mModel.initSelection(new Point((int) _e.getX(), (int) _e.getY()));
                         mView.createSelectionDialog(geos);

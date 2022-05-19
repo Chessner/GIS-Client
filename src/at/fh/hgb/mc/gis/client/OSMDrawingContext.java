@@ -30,7 +30,7 @@ public class OSMDrawingContext extends ADrawingContext {
         mContext.put(6014,new PresentationSchema(Color.RED,Color.GREEN,1f)); //trees
 
         for(int i = 9001; i < 9030; i++) {
-            if(i == 9029) i = 9999;
+            if(i == 9029) break;
 
             mContext.put(i, new PresentationSchema(Color.darkGray, Color.GRAY, 1.0f));
         }

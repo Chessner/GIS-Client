@@ -315,6 +315,8 @@ public class GISView extends Application implements IDataObserver {
      * Method used for painting mImage to the canvas, indicated by CANVAS_ID, in the mScene.
      */
     public void repaint() {
+        if(mImage == null) return;
+
         Canvas c = (Canvas) mScene.lookup("#" + CANVAS_ID);
         GraphicsContext gc = c.getGraphicsContext2D();
         if (mStartDrag) {
@@ -356,6 +358,8 @@ public class GISView extends Application implements IDataObserver {
      * @param _dy Amount by which the canvas should be moved in y direction.
      */
     public void translate(double _dx, double _dy) {
+        if(mImage == null) return;
+
         Canvas c = (Canvas) mScene.lookup("#" + CANVAS_ID);
         GraphicsContext gc = c.getGraphicsContext2D();
         // clean up bitblt errors …
