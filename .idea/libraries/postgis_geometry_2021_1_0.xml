@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="postgis-geometry-2021.1.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/postgresql_libs/postgis-geometry-2021.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/postgresql_libs/postgis-jdbc-2021.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/postgresql_libs/postgresql-42.2.18.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

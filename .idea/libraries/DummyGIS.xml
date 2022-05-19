@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="DummyGIS">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/DummyServer/DummyGIS.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
