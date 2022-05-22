@@ -8,6 +8,7 @@ import net.postgis.jdbc.geometry.LinearRing;
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -28,7 +29,7 @@ public abstract class OSMServer implements IGISServer {
     protected Connection mConnection;
 
     @Override
-    public List<GeoObject> extractData(String _statement) {
+    public List<GeoObject> extractData(String _statement, boolean _keepConnectionOpen) {
         mList = new LinkedList<>();
         try {
             /* Create a statement and execute a select query. */
@@ -136,7 +137,7 @@ public abstract class OSMServer implements IGISServer {
                 }
             }
             s.close();
-            mConnection.close();
+            if(!_keepConnectionOpen) mConnection.close();
         } catch (
                 Exception _e) {
             _e.printStackTrace();
@@ -144,4 +145,12 @@ public abstract class OSMServer implements IGISServer {
         return mList;
     }
 
+    @Override
+    public void closeConnection() {
+        try {
+            mConnection.close();
+        } catch (SQLException _e) {
+            _e.printStackTrace();
+        }
+    }
 }

@@ -445,29 +445,45 @@ public class GISModel {
 
         if (mServer instanceof Verwaltungsgrenzen3857Server || mServer instanceof Verwaltungsgrenzen4326Server) {
             mData = mServer.extractData("SELECT * FROM bundeslaender " +
-                    "WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))");
+                    "WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))", false);
         } else if (mServer instanceof DummyGIS) {
             //mData = mServer.extractData("select * from data where type in (233, 931, 932, 933, 934, 1101)");
             System.out.println("Cannot do sticky with DummyGIS server... Please use a different server");
         } else if (mServer instanceof OSMHagenberg) {
-            List<GeoObject> landuse = mServer.extractData("SELECT * FROM osm_landuse WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))");
+            List<GeoObject> landuse = mServer.extractData("SELECT * FROM osm_landuse WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))", false);
             mServer.init();
-            List<GeoObject> natural = mServer.extractData("SELECT * FROM osm_natural WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))");
+            List<GeoObject> natural = mServer.extractData("SELECT * FROM osm_natural WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))", false);
             mServer.init();
-            List<GeoObject> building = mServer.extractData("SELECT * FROM osm_building WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))");
+            List<GeoObject> building = mServer.extractData("SELECT * FROM osm_building WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))", false);
             mData = new LinkedList<>();
             mData.addAll(natural);
             mData.addAll(landuse);
             mData.addAll(building);
         } else if (mServer instanceof OSMLinz) {
-            List<GeoObject> landuse = mServer.extractData("SELECT * FROM osm_landuse WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))");
+            List<GeoObject> highway = mServer.extractData("SELECT * FROM osm_highway WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))", false);
             mServer.init();
-            List<GeoObject> natural = mServer.extractData("SELECT * FROM osm_natural WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))");
+            List<GeoObject> waterway = mServer.extractData("SELECT * FROM osm_waterway WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))", false);
             mServer.init();
-            List<GeoObject> building = mServer.extractData("SELECT * FROM osm_building WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))");
-            mData = new LinkedList<>();
+            List<GeoObject> railway = mServer.extractData("SELECT * FROM osm_railway WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))", false);
+            mServer.init();
+            List<GeoObject> leisure = mServer.extractData("SELECT * FROM osm_leisure WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))", false);
+            mServer.init();
+            List<GeoObject> place = mServer.extractData("SELECT * FROM osm_place WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))", false);
+            mServer.init();
+            List<GeoObject> landuse = mServer.extractData("SELECT * FROM osm_landuse WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))", false);
+            mServer.init();
+            List<GeoObject> natural = mServer.extractData("SELECT * FROM osm_natural WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))", false);
+            mServer.init();
+            List<GeoObject> building = mServer.extractData("SELECT * FROM osm_building WHERE ST_Intersects(geom, ST_MakeEnvelope(" + mBBox.getMinX() + ", " + mBBox.getMinY() + ", " + mBBox.getMaxX() + "," + mBBox.getMaxY() + "))", false);
+
+            mData = new ArrayList<>();
+            mData.addAll(highway);
+            mData.addAll(waterway);
+            mData.addAll(railway);
+            mData.addAll(leisure);
             mData.addAll(natural);
             mData.addAll(landuse);
+            mData.addAll(place);
             mData.addAll(building);
         }
     }
@@ -478,28 +494,38 @@ public class GISModel {
      */
     private void doStandardExtraction() {
         if (mServer instanceof Verwaltungsgrenzen3857Server || mServer instanceof Verwaltungsgrenzen4326Server) {
-            mData = mServer.extractData("SELECT * FROM bundeslaender");
+            mData = mServer.extractData("SELECT * FROM bundeslaender", false);
         } else if (mServer instanceof DummyGIS) {
-            mData = new LinkedList<>(mServer.extractData("select * from data where type in (233, 931, 932, 933, 934, 1101)"));
+            mData = new LinkedList<>(mServer.extractData("select * from data where type in (233, 931, 932, 933, 934, 1101)", false));
         } else if (mServer instanceof OSMHagenberg) {
-            List<GeoObject> landuse = mServer.extractData("SELECT * FROM osm_landuse");
-            mServer.init();
-            List<GeoObject> natural = mServer.extractData("SELECT * FROM osm_natural");
-            mServer.init();
-            List<GeoObject> building = mServer.extractData("SELECT * FROM osm_building");
+            List<GeoObject> landuse = mServer.extractData("SELECT * FROM osm_landuse", true);
+            List<GeoObject> natural = mServer.extractData("SELECT * FROM osm_natural", true);
+            List<GeoObject> building = mServer.extractData("SELECT * FROM osm_building", true);
+            mServer.closeConnection();
+
             mData = new LinkedList<>();
             mData.addAll(natural);
             mData.addAll(landuse);
             mData.addAll(building);
         } else if(mServer instanceof OSMLinz){
-            List<GeoObject> landuse = mServer.extractData("SELECT * FROM osm_landuse");
-            mServer.init();
-            List<GeoObject> natural = mServer.extractData("SELECT * FROM osm_natural");
-            mServer.init();
-            List<GeoObject> building = mServer.extractData("SELECT * FROM osm_building");
-            mData = new LinkedList<>();
+            List<GeoObject> highway = mServer.extractData("SELECT * FROM osm_highway", true);
+            List<GeoObject> waterway = mServer.extractData("SELECT * FROM osm_waterway", true);
+            List<GeoObject> railway = mServer.extractData("SELECT * FROM osm_railway", true);
+            List<GeoObject> leisure = mServer.extractData("SELECT * FROM osm_leisure", true);
+            List<GeoObject> place = mServer.extractData("SELECT * FROM osm_place", true);
+            List<GeoObject> landuse = mServer.extractData("SELECT * FROM osm_landuse", true);
+            List<GeoObject> natural = mServer.extractData("SELECT * FROM osm_natural", true);
+            List<GeoObject> building = mServer.extractData("SELECT * FROM osm_building", true);
+            mServer.closeConnection();
+
+            mData = new ArrayList<>();
+            mData.addAll(highway);
+            mData.addAll(waterway);
+            mData.addAll(railway);
+            mData.addAll(leisure);
             mData.addAll(natural);
             mData.addAll(landuse);
+            mData.addAll(place);
             mData.addAll(building);
         }
     }

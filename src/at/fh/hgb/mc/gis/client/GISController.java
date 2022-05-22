@@ -84,9 +84,7 @@ public class GISController {
     private boolean mControlKeyDown = false;
 
     /**
-     * Constructs a controller with a given model.
-     *
-     * @param _m Corresponding GISModel.
+     * Constructs a controller with a given model and view.
      */
     public GISController(GISModel _m, GISView _v) {
         mModel = _m;

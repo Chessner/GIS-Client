@@ -48,7 +48,7 @@ public class DummyGIS implements IGISServer {
     /**
      * Extrahiert einige Geoobjekte aus dem Server
      */
-    public java.util.List<GeoObject> extractData(String _stmt) {
+    public java.util.List<GeoObject> extractData(String _stmt, boolean _keepConnectionOpen) {
         try {
             CgStatement stmt = m_geoInterface.Execute(_stmt);
             CgResultSet cursor = stmt.getCursor();
@@ -72,11 +72,19 @@ public class DummyGIS implements IGISServer {
             return objectContainer;
         } catch (Exception _e) {
             _e.printStackTrace();
+        } finally {
+            if(_keepConnectionOpen) System.out.println("DummyGIS cannot keep the connection open...");
         }
         return null;
     }
-
+    @Override
     public ADrawingContext getDrawingContext() {
         return new DummyDrawingContext();
+    }
+
+    @Override
+    public void closeConnection() {
+        m_geoConnection = null;
+        m_geoInterface = null;
     }
 }

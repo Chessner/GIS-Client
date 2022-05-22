@@ -13,14 +13,16 @@ public class GeoLine implements GeoObjectPart {
      */
     List<java.awt.Point> mGeometry;
 
-    public GeoLine() {
-    }
-
+    /**
+     * Constructs a new GeoLine.
+     * @param _points List of points defining the new line.
+     */
     public GeoLine(List<Point> _points) {
         mGeometry = _points;
     }
 
 
+    @Override
     public void draw(Graphics2D _g, Matrix _m, Color _lineColor, Color _fillColor) {
         if (mGeometry == null) return;
 
@@ -40,7 +42,7 @@ public class GeoLine implements GeoObjectPart {
         _g.setStroke(stroke);
     }
 
-
+    @Override
     public Rectangle getBounds() {
         if (mGeometry != null) {
             if (!mGeometry.isEmpty()) {

@@ -19,6 +19,7 @@ public class GeoPoint implements GeoObjectPart {
         mGeometry = _p;
     }
 
+    @Override
     public void draw(Graphics2D _g, Matrix _m, Color _lineColor, Color _fillColor) {
 
         if (mGeometry == null) return;
@@ -31,11 +32,10 @@ public class GeoPoint implements GeoObjectPart {
         _g.drawOval(transformedPoint.x, transformedPoint.y, 5, 5);
     }
 
-
+    @Override
     public Rectangle getBounds() {
         if (mGeometry != null) {
-            Rectangle bound = new Rectangle(mGeometry.x-10, mGeometry.y-10, 20, 20);
-            return bound;
+            return new Rectangle(mGeometry.x-10, mGeometry.y-10, 20, 20);
         }
         return null;
     }

@@ -21,9 +21,10 @@ public interface IGISServer {
      * This method fetches the data, specified by the given statement, from the database server.
      *
      * @param _statement SQL Statement in String format.
+     * @param _keepConnectionOpen Flag indicating whether the connection should be closed or not.
      * @return List of GeoObjects containing the fetched data.
      */
-    List<GeoObject> extractData(String _statement);
+    List<GeoObject> extractData(String _statement, boolean _keepConnectionOpen);
 
     /**
      * This method provides a ADrawingContext for the different GeoObject
@@ -32,4 +33,9 @@ public interface IGISServer {
      * @return ADrawingContext for the types.
      */
     ADrawingContext getDrawingContext();
+
+    /**
+     * This method is used to close the connection to the server.
+     */
+    void closeConnection();
 }

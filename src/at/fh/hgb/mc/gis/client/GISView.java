@@ -22,14 +22,12 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.w3c.dom.css.Rect;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.*;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * This class provides an entrypoint into a javafx program. It represents the View part of the implemented MVC-pattern.
@@ -72,7 +70,14 @@ public class GISView extends Application implements IDataObserver {
      * Reference to the corresponding controller from the MVC-pattern.
      */
     private GISController mController;
+    /**
+     * Reference to the corresponding model from the MVC-pattern.
+     */
     private GISModel mModel;
+    /**
+     * Reference to the dialog controller from the MVC-pattern for the selection dialog.
+     */
+    private DialogController mDialogController;
     /**
      * Image containing every polygon that should be drawn to the canvas.
      */
@@ -81,15 +86,19 @@ public class GISView extends Application implements IDataObserver {
      * Primary scene in the javafx program.
      */
     protected Scene mScene;
-
+    /**
+     * Secondary scene in the javafx program.
+     * This scene displays the Selection Dialog.
+     */
     protected Scene mDialogScene;
+    /**
+     * Stage used for the selection dialog window.
+     */
     private Stage mDialogStage;
     /**
      * Flag indicating whether the displayed image is currently being dragged across the screen.
      */
     private boolean mStartDrag;
-
-    private DialogController mDialogController;
 
     public static void main(String[] _argv) {
         launch(_argv);
@@ -380,6 +389,11 @@ public class GISView extends Application implements IDataObserver {
         gc.drawImage(writable, 0, 0);
     }
 
+    // -----------------------------------------BONUS----------------------------------------- //
+    /**
+     * This method starts up a new window to display the Selection Dialog for the given GeoObjects.
+     * @param _data GeoObjects to be displayed.
+     */
     public void createSelectionDialog(java.util.List<GeoObject> _data) {
         if(mDialogStage != null) return;
         mDialogController = new DialogController(_data, this);
@@ -426,6 +440,11 @@ public class GISView extends Application implements IDataObserver {
         listView.setItems(list);
     }
 
+    /**
+     * This method displays the information of a given GeoObject in the Selection Dialog window.
+     * Dialog has to be created first with createSelectionDialog().
+     * @param _item GeoObject to display.
+     */
     public void displayDialogItem(GeoObject _item){
         Text idText = (Text) mDialogScene.lookup("#idText");
         idText.setText(_item.getId());
@@ -455,6 +474,9 @@ public class GISView extends Application implements IDataObserver {
         gc.drawImage(writable, 0, 0);
     }
 
+    /**
+     * This method is responsible for closing the currently running Selection Dialog.
+     */
     protected void closeSelectionDialog(){
         mDialogStage.close();
         mDialogStage = null;

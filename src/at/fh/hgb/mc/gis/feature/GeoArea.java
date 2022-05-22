@@ -38,6 +38,7 @@ public class GeoArea implements GeoObjectPart{
      * @param _lineColor Color used for drawing the outside line of the object.
      * @param _fillColor Color used for filling the object.
      */
+    @Override
     public void draw(Graphics2D _g, Matrix _m, Color _lineColor, Color _fillColor) {
 
         if(mGeometry == null) return;
@@ -56,7 +57,7 @@ public class GeoArea implements GeoObjectPart{
         _g.draw(area);
     }
 
-
+    @Override
     public Rectangle getBounds() {
         if(mGeometry != null){
             return mGeometry.getBounds();
@@ -68,22 +69,10 @@ public class GeoArea implements GeoObjectPart{
     public String toString() {
         if(mGeometry != null){
             StringBuilder b = new StringBuilder();
-            //int[] xArray = mGeometry.xpoints;
-            //int[] yArray = mGeometry.ypoints;
-            //for (int j = 0; j < mGeometry.npoints; j++) {
-            //    b.append("[").append(xArray[j]).append(" ; ").append(yArray[j]).append("]");
-            //}
             b.append(mGeometry);
             return b.toString();
         }
         return "";
-    }
-
-    /**
-     * Constructs a new GeoArea.
-     */
-    public GeoArea(){
-        mGeometry = new Polygon();
     }
 
     /**

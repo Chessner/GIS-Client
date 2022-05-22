@@ -19,7 +19,15 @@ public class GeoObject implements Comparable<GeoObject>, Comparator<GeoObject> {
      * e.g. House, Street,...
      */
     private int mType;
+    /**
+     * Geometric type of the object.
+     * e.g. Polygon, Line,...
+     */
     private String mGeomType;
+    /**
+     * All available attributes on the object.
+     * e.g. Name, speed limit for streets,...
+     */
     private String mAttr;
     /**
      * Polygon containing the actual data of the object.
@@ -41,6 +49,9 @@ public class GeoObject implements Comparable<GeoObject>, Comparator<GeoObject> {
         mAttr = _attr;
     }
 
+    /**
+     * Constructs an empty GeoObject.
+     */
     public GeoObject(){
 
     }
@@ -73,6 +84,11 @@ public class GeoObject implements Comparable<GeoObject>, Comparator<GeoObject> {
         return mGeomType;
     }
 
+    /**
+     * Liefert die Attribute des Geo-Objektes
+     *
+     * @return Die Attribute des Objektes
+     */
     public String getAttr(){
         return mAttr;
     }

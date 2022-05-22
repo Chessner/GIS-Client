@@ -11,10 +11,7 @@ import org.postgresql.PGConnection;
 import org.postgresql.util.PGobject;
 
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,7 +53,7 @@ public class Verwaltungsgrenzen4326Server implements IGISServer {
     }
 
     @Override
-    public List<GeoObject> extractData(String _statement) {
+    public List<GeoObject> extractData(String _statement, boolean _keepConnectionOpen) {
         mList = new LinkedList<>();
         try {
             /* Create a statement and execute a select query. */
@@ -149,7 +146,7 @@ public class Verwaltungsgrenzen4326Server implements IGISServer {
                 }
             }
             s.close();
-            mConnection.close();
+            if(!_keepConnectionOpen) mConnection.close();
         } catch (
                 Exception _e) {
             _e.printStackTrace();
@@ -160,6 +157,15 @@ public class Verwaltungsgrenzen4326Server implements IGISServer {
     @Override
     public ADrawingContext getDrawingContext() {
         return new VerwaltungsgrenzenDrawingContext();
+    }
+
+    @Override
+    public void closeConnection() {
+        try {
+            mConnection.close();
+        } catch (SQLException _e) {
+            _e.printStackTrace();
+        }
     }
 
 

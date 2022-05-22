@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class Matrix {
+    /**
+     * Two-dimensional array containing the matrix values.
+     */
     public double[][] mValues;
 
     /**
@@ -25,10 +28,16 @@ public class Matrix {
         mValues = new double[][]{{_m11, _m21, _m31}, {_m12, _m22, _m32}, {_m13, _m23, _m33}};
     }
 
+    /**
+     * Getter to fetch a specific value in the matrix.
+     */
     public double getMatrixValue(int x, int y){
         return mValues[y][x];
     }
 
+    /**
+     * Setter to set a specific value in the matrix.
+     */
     public void setMatrixValue(int x, int y, double value){
         mValues[y][x] = value;
     }
