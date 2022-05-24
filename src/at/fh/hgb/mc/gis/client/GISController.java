@@ -340,6 +340,38 @@ public class GISController {
                 }
                 break;
 
+                case SERVER_MENU_OSM_AZORES: {
+                    if (!(mModel.mServer instanceof OSMAzores)) {
+                        mModel.mServer = new OSMAzores();
+                        serverChanged = true;
+                    }
+                }
+                break;
+
+                case SERVER_MENU_OSM_HAWAII: {
+                    if (!(mModel.mServer instanceof OSMHawaii)) {
+                        mModel.mServer = new OSMHawaii();
+                        serverChanged = true;
+                    }
+                }
+                break;
+
+                case SERVER_MENU_OSM_FAROE_ISLANDS: {
+                    if (!(mModel.mServer instanceof OSMFaroe)) {
+                        mModel.mServer = new OSMFaroe();
+                        serverChanged = true;
+                    }
+                }
+                break;
+
+                case SERVER_MENU_OSM_CYPRUS: {
+                    if (!(mModel.mServer instanceof OSMCyprus)) {
+                        mModel.mServer = new OSMCyprus();
+                        serverChanged = true;
+                    }
+                }
+                break;
+
                 case SERVER_MENU_OSM_LINZ: {
                     if (!(mModel.mServer instanceof OSMLinz)) {
                         mModel.mServer = new OSMLinz();

@@ -497,17 +497,25 @@ public class GISModel {
             mData = mServer.extractData("SELECT * FROM bundeslaender", false);
         } else if (mServer instanceof DummyGIS) {
             mData = new LinkedList<>(mServer.extractData("select * from data where type in (233, 931, 932, 933, 934, 1101)", false));
-        } else if (mServer instanceof OSMHagenberg) {
+        } else if(mServer instanceof OSMCyprus || mServer instanceof OSMFaroe || mServer instanceof OSMAzores) {
+            List<GeoObject> highway = mServer.extractData("SELECT * FROM osm_highway", true);
+            List<GeoObject> waterway = mServer.extractData("SELECT * FROM osm_waterway", true);
+            List<GeoObject> leisure = mServer.extractData("SELECT * FROM osm_leisure", true);
+            List<GeoObject> place = mServer.extractData("SELECT * FROM osm_place", true);
             List<GeoObject> landuse = mServer.extractData("SELECT * FROM osm_landuse", true);
             List<GeoObject> natural = mServer.extractData("SELECT * FROM osm_natural", true);
             List<GeoObject> building = mServer.extractData("SELECT * FROM osm_building", true);
             mServer.closeConnection();
 
-            mData = new LinkedList<>();
+            mData = new ArrayList<>();
+            mData.addAll(highway);
+            mData.addAll(waterway);
+            mData.addAll(leisure);
             mData.addAll(natural);
             mData.addAll(landuse);
+            mData.addAll(place);
             mData.addAll(building);
-        } else if(mServer instanceof OSMLinz){
+        } else if(mServer instanceof OSMLinz || mServer instanceof OSMHagenberg || mServer instanceof OSMHawaii){
             List<GeoObject> highway = mServer.extractData("SELECT * FROM osm_highway", true);
             List<GeoObject> waterway = mServer.extractData("SELECT * FROM osm_waterway", true);
             List<GeoObject> railway = mServer.extractData("SELECT * FROM osm_railway", true);

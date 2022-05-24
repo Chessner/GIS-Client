@@ -67,6 +67,22 @@ public class GISView extends Application implements IDataObserver {
      */
     protected static final String SERVER_MENU_OSM_LINZ = "SERVER_MENU_OSM_LINZ";
     /**
+     * Unique id to identify and find the OSM_HAWAII item from the server menu.
+     */
+    protected static final String SERVER_MENU_OSM_HAWAII = "SERVER_MENU_OSM_HAWAII";
+    /**
+     * Unique id to identify and find the OSM_AZORES item from the server menu.
+     */
+    protected static final String SERVER_MENU_OSM_AZORES = "SERVER_MENU_OSM_AZORES";
+    /**
+     * Unique id to identify and find the OSM_CYPRUS item from the server menu.
+     */
+    protected static final String SERVER_MENU_OSM_CYPRUS = "SERVER_MENU_OSM_CYPRUS";
+    /**
+     * Unique id to identify and find the OSM_FAROE_ISLANDS item from the server menu.
+     */
+    protected static final String SERVER_MENU_OSM_FAROE_ISLANDS = "SERVER_MENU_OSM_FAROE_ISLANDS";
+    /**
      * Reference to the corresponding controller from the MVC-pattern.
      */
     private GISController mController;
@@ -157,14 +173,7 @@ public class GISView extends Application implements IDataObserver {
         overlay.heightProperty().bind(canvasPane.heightProperty());
         canvasPane.getChildren().addAll(canvas, overlay);
 
-
-        // Create Menu A
-        Menu menuA = new Menu("A");
-        MenuItem menuAItem01 = new MenuItem("Test");
-        menuAItem01.setOnAction(mController.getActionHandler());
-        menuA.getItems().addAll(menuAItem01);
-
-        // Create Menu B
+        // Create Server Menu
         Menu serverMenu = new Menu("Server");
         RadioMenuItem serverMenuDummyGIS = new RadioMenuItem("DummyGIS");
         serverMenuDummyGIS.setId(SERVER_MENU_DUMMY_GIS);
@@ -178,15 +187,32 @@ public class GISView extends Application implements IDataObserver {
         serverMenuVWTG4326.setId(SERVER_MENU_VWTG_4326);
         serverMenuVWTG4326.setOnAction(mController.getActionHandler());
 
-        RadioMenuItem serverMenuOSMHagenberg = new RadioMenuItem("OSM Hagenberg");
+        RadioMenuItem serverMenuOSMHagenberg = new RadioMenuItem("Hagenberg");
         serverMenuOSMHagenberg.setId(SERVER_MENU_OSM_HAGENBERG);
         serverMenuOSMHagenberg.setOnAction(mController.getActionHandler());
 
-        RadioMenuItem serverMenuOSMLinz = new RadioMenuItem("OSM Linz");
+        RadioMenuItem serverMenuOSMLinz = new RadioMenuItem("Linz");
         serverMenuOSMLinz.setId(SERVER_MENU_OSM_LINZ);
         serverMenuOSMLinz.setOnAction(mController.getActionHandler());
 
-        serverMenu.getItems().addAll(serverMenuDummyGIS, serverMenuVWTG3857, serverMenuVWTG4326, serverMenuOSMHagenberg, serverMenuOSMLinz);
+        RadioMenuItem serverMenuOSMHawaii = new RadioMenuItem("Hawaii");
+        serverMenuOSMHawaii.setId(SERVER_MENU_OSM_HAWAII);
+        serverMenuOSMHawaii.setOnAction(mController.getActionHandler());
+
+        RadioMenuItem serverMenuOSMAzores = new RadioMenuItem("Azores");
+        serverMenuOSMAzores.setId(SERVER_MENU_OSM_AZORES);
+        serverMenuOSMAzores.setOnAction(mController.getActionHandler());
+
+        RadioMenuItem serverMenuOSMFaroeIslands = new RadioMenuItem("Faroe Islands");
+        serverMenuOSMFaroeIslands.setId(SERVER_MENU_OSM_FAROE_ISLANDS);
+        serverMenuOSMFaroeIslands.setOnAction(mController.getActionHandler());
+
+        RadioMenuItem serverMenuOSMCyprus = new RadioMenuItem("Cyprus");
+        serverMenuOSMCyprus.setId(SERVER_MENU_OSM_CYPRUS);
+        serverMenuOSMCyprus.setOnAction(mController.getActionHandler());
+
+        serverMenu.getItems().addAll(serverMenuDummyGIS, serverMenuVWTG3857, serverMenuVWTG4326, serverMenuOSMHagenberg,
+                serverMenuOSMLinz, serverMenuOSMAzores, serverMenuOSMCyprus, serverMenuOSMFaroeIslands, serverMenuOSMHawaii);
 
         ToggleGroup tg = new ToggleGroup();
         serverMenuDummyGIS.setToggleGroup(tg);
@@ -194,11 +220,15 @@ public class GISView extends Application implements IDataObserver {
         serverMenuVWTG4326.setToggleGroup(tg);
         serverMenuOSMLinz.setToggleGroup(tg);
         serverMenuOSMHagenberg.setToggleGroup(tg);
+        serverMenuOSMAzores.setToggleGroup(tg);
+        serverMenuOSMHawaii.setToggleGroup(tg);
+        serverMenuOSMFaroeIslands.setToggleGroup(tg);
+        serverMenuOSMCyprus.setToggleGroup(tg);
         serverMenuOSMLinz.setSelected(true);
 
         // Create MenuBar and add menus
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(menuA, serverMenu);
+        menuBar.getMenus().addAll(serverMenu);
 
         // Add menuBar to BorderPane (root)
         root.setTop(menuBar);
@@ -325,7 +355,7 @@ public class GISView extends Application implements IDataObserver {
      * Method used for painting mImage to the canvas, indicated by CANVAS_ID, in the mScene.
      */
     public void repaint() {
-        if(mImage == null) return;
+        if (mImage == null) return;
 
         Canvas c = (Canvas) mScene.lookup("#" + CANVAS_ID);
         GraphicsContext gc = c.getGraphicsContext2D();
@@ -368,7 +398,7 @@ public class GISView extends Application implements IDataObserver {
      * @param _dy Amount by which the canvas should be moved in y direction.
      */
     public void translate(double _dx, double _dy) {
-        if(mImage == null) return;
+        if (mImage == null) return;
 
         Canvas c = (Canvas) mScene.lookup("#" + CANVAS_ID);
         GraphicsContext gc = c.getGraphicsContext2D();
@@ -390,12 +420,14 @@ public class GISView extends Application implements IDataObserver {
     }
 
     // -----------------------------------------BONUS----------------------------------------- //
+
     /**
      * This method starts up a new window to display the Selection Dialog for the given GeoObjects.
+     *
      * @param _data GeoObjects to be displayed.
      */
     public void createSelectionDialog(java.util.List<GeoObject> _data) {
-        if(mDialogStage != null) return;
+        if (mDialogStage != null) return;
         mDialogController = new DialogController(_data, this);
         mDialogStage = new Stage();
         Parent root;
@@ -420,8 +452,8 @@ public class GISView extends Application implements IDataObserver {
         int currentType = -1;
         MenuButton currentButton = null;
         _data.sort(new GeoObject());
-        for(int i = 0; i < _data.size(); i++){
-            if(_data.get(i).getType() != currentType){
+        for (int i = 0; i < _data.size(); i++) {
+            if (_data.get(i).getType() != currentType) {
                 currentButton = new MenuButton(Integer.toString(_data.get(i).getType()));
                 currentButton.setPrefWidth(130);
                 menuButtons.add(currentButton);
@@ -431,7 +463,7 @@ public class GISView extends Application implements IDataObserver {
             item.setId(_data.get(i).getType() + "," + _data.get(i).getId());
             item.setOnAction(mDialogController.getDialogActionHandler());
 
-            if(currentButton != null) currentButton.getItems().addAll(item);
+            if (currentButton != null) currentButton.getItems().addAll(item);
         }
 
 
@@ -443,9 +475,10 @@ public class GISView extends Application implements IDataObserver {
     /**
      * This method displays the information of a given GeoObject in the Selection Dialog window.
      * Dialog has to be created first with createSelectionDialog().
+     *
      * @param _item GeoObject to display.
      */
-    public void displayDialogItem(GeoObject _item){
+    public void displayDialogItem(GeoObject _item) {
         Text idText = (Text) mDialogScene.lookup("#idText");
         idText.setText(_item.getId());
         Text typeText = (Text) mDialogScene.lookup("#typeText");
@@ -459,14 +492,14 @@ public class GISView extends Application implements IDataObserver {
 
         Rectangle world = _item.getBounds();
         Rectangle window = new Rectangle((int) canvas.getWidth(), (int) canvas.getHeight());
-        Matrix transformationMatrix = Matrix.zoomToFit(world,window,true);
+        Matrix transformationMatrix = Matrix.zoomToFit(world, window, true);
 
-        BufferedImage image = new BufferedImage((int)canvas.getWidth(),(int)canvas.getHeight(),BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage((int) canvas.getWidth(), (int) canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = (Graphics2D) image.getGraphics();
 
         ADrawingContext context = mModel.mDrawingContext;
         PresentationSchema schema = context.getSchema(_item.getType());
-        schema.paint(g2d,_item,transformationMatrix);
+        schema.paint(g2d, _item, transformationMatrix);
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
         WritableImage writable = SwingFXUtils.toFXImage(image, null);
@@ -477,7 +510,7 @@ public class GISView extends Application implements IDataObserver {
     /**
      * This method is responsible for closing the currently running Selection Dialog.
      */
-    protected void closeSelectionDialog(){
+    protected void closeSelectionDialog() {
         mDialogStage.close();
         mDialogStage = null;
         mDialogScene = null;
